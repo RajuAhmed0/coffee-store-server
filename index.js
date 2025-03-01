@@ -58,7 +58,7 @@ async function run() {
 
 
         // update 2nd method
-        app.patch("/Update_Existing_Coffee/:id", async (req, res) => {
+        app.patch("/update_coffee/:id", async (req, res) => {
             const id = req.params.id;
             const coffeeFormUpdate = req.body;
             const query = { _id: new ObjectId(id) }
@@ -72,7 +72,7 @@ async function run() {
                     taste: coffeeFormUpdate.taste,
                     category: coffeeFormUpdate.category,
                     price: coffeeFormUpdate.price,
-                    photo: coffeeFormUpdate.photo
+                    photo_Url: coffeeFormUpdate.photo_Url
                 }
 
             }
