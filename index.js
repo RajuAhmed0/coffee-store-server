@@ -37,24 +37,51 @@ async function run() {
 
         app.get("/coffee/:id", async (req, res) => {
             const id = req.params.id;
-            const query = {_id: new ObjectId(id)}
+            const query = { _id: new ObjectId(id) }
             const result = await coffeeInfo.findOne(query)
             res.send(result)
         })
 
 
-        app.post("/coffee", async (req,res)=>{
+        app.post("/coffee", async (req, res) => {
             const coffeeData = req.body;
             const result = await coffeeInfo.insertOne(coffeeData)
             res.send(result)
         })
-     
+
         app.delete('/coffee/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await coffeeInfo.deleteOne(query);
             res.send(result)
         })
+
+
+        // update 2nd method
+        app.patch("/Update_Existing_Coffee/:id", async (req, res) => {
+            const id = req.params.id;
+            const coffeeFormUpdate = req.body;
+            const query = { _id: new ObjectId(id) }
+
+            const coffeeDoc = {
+                $set: {
+                    name: coffeeFormUpdate.name,
+                    chef: coffeeFormUpdate.chef,
+                    supplier: coffeeFormUpdate.supplier,
+                    details: coffeeFormUpdate.details,
+                    taste: coffeeFormUpdate.taste,
+                    category: coffeeFormUpdate.category,
+                    price: coffeeFormUpdate.price,
+                    photo: coffeeFormUpdate.photo
+                }
+
+            }
+            const result = await coffeeInfo.updateOne(query, coffeeDoc)
+            res.send(result)
+        })
+
+
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
