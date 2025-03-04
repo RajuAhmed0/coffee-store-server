@@ -27,12 +27,41 @@ async function run() {
         await client.connect();
 
         const coffeeInfo = client.db("coffee_store").collection("coffee");
+        const userInfo = client.db("coffee_store").collection("users");
 
 
         app.get("/coffee", async (req, res) => {
             const result = await coffeeInfo.find().toArray()
             res.send(result)
         })
+
+
+
+
+        app.get("/users", async (req, res) => {
+            const result = await userInfo.find().toArray()
+            res.send(result)
+        })
+
+        app.get("/users", async (req, res) => {
+            const userData = req.body;
+            const result = await userInfo.insertOne(userData);
+            res.send(result)
+        })
+
+        app.patch('/users', async (req, res) => {
+            const users = req.body;
+            console.log(users);
+            const query = { email: users.email }
+            const updatedoc = {
+                $set: {
+                    lastSignInTime: users.lastSignInTime
+                }
+            }
+            const result = await userInfo.updateOne(query, updatedoc)
+            res.send(result)
+        })
+
 
 
         app.get("/coffee/:id", async (req, res) => {
